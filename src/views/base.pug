@@ -1,0 +1,29 @@
+doctype html
+html(lang="ko")
+    head
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+        title #{pageTitle} | #{siteName}
+    header  
+        h1=pageTitle
+    div 
+        ul 
+            
+            li 
+                a(href="/") home 
+            if loggedIn
+                li  
+                    a(href="/watch") watch     
+                li 
+                    a(href="/videos/upload") Upload   
+                li 
+                    a(href="/search") Search   
+                li 
+                    a(href="/users/logout") Logout
+            else   
+                li  
+                    a(href="/login") Login     
+                li  
+                    a(href="/join") Join   
+    body
+        block content
+    include partials/footer.pug 

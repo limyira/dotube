@@ -1,0 +1,10 @@
+extends base.pug
+
+
+
+block content
+    form(method="POST")
+        input(placeholder="Title", name="title", min=4, value=video.title)
+        input(placeholder="Description", name="description", min=6, value=video.desription)
+        input(placeholder="Hashtags",  name="hashtags", value=video.hashtags.toString())
+        input(type="submit", value="Edit Video")

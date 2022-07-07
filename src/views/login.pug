@@ -1,0 +1,16 @@
+extends base
+
+
+block content
+    form(method="POST")
+        input(name="username", type="text", required, placeholder="Username")
+        input(name="password", type="password", required, placeholder="Password")
+        input(type="submit", value="Login")
+
+    hr
+    div
+        span Don't have an account? 
+        a(href="/join") Create one now &rarr; 
+        br
+        span Login Github? 
+        a(href="/users/startgithub") Github login now &rarr; 

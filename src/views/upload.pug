@@ -1,0 +1,9 @@
+extends base
+
+
+block content 
+    form(method="POST")
+        input(placeholder="Title", type="text", name="title", required, min=4)
+        input(placeholder="Description", type="text", name="description", required, min=6)
+        input(placeholder="hashtags split by comma", type="text", name="hashtags")
+        input(type="submit", value="Upload")
