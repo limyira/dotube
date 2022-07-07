@@ -1,0 +1,18 @@
+doctype html
+html(lang="ko")
+    head
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+        title #{pageTitle} | Dotube
+    header  
+        h1=pageTitle
+    div 
+        ul 
+            li 
+                a(href="/") home 
+            li  
+                a(href="/watch") watch     
+            li 
+                a(href="/videos/upload") Upload   
+    body
+        block content
+    include partials/footer.pug 
