@@ -2,6 +2,7 @@ import "dotenv/config";
 import "./db";
 import "./models/Video";
 import "./models/User";
+import path  from "path";
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
@@ -17,7 +18,7 @@ const logger = morgan("dev");
 
 
 app.set("view engine", "pug");
-app.set("views", process.cwd() + "/src/views");
+app.set("views",path.join(process.cwd(), "src/views"));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -28,6 +29,8 @@ app.use(session({
 
 
 app.use(loacalsMiddleware);
+app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use("/", rootRouter);
