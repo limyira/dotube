@@ -3,7 +3,9 @@ import { getEdit, postEdit, watch, getUpload, postUpload, deleteVideo } from "..
 import { videoUpload} from "../middleware";
 const videoRouter = express.Router();
 
-videoRouter.route("/upload").get(getUpload).post(videoUpload.single("video"),postUpload);
+videoRouter.route("/upload").get(getUpload).post(videoUpload.fields(
+    [{name:"video", maxCount:1},{name: "thumb", maxCount:1}]
+),postUpload);
 videoRouter.route("/:id([0-9a-f]{24})/edit").get(getEdit).post(postEdit);
 videoRouter.get("/:id([0-9a-f]{24})", watch);
 videoRouter.get("/:id([0-9a-f]{24})/delete", deleteVideo);

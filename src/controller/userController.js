@@ -14,7 +14,7 @@ export const postJoin = async (req, res) => {
         email,
         location,
         password,
-        socialOnly:false,
+        socialOnly: false,
     })
     console.log(user);
     return res.redirect("/");
@@ -25,10 +25,11 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const pageTitle = "Login";
-    const user = await User.findOne({ username, socialOnly:false })
+    const user = await User.findOne({ username, socialOnly: false })
     if (!user) {
-        return res.status(400).render("login", {pageTitle , errorMessage: "An account with this username does not exists.",
-    })
+        return res.status(400).render("login", {
+            pageTitle, errorMessage: "An account with this username does not exists.",
+        })
     }
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) {
@@ -60,7 +61,7 @@ export const finishGithub = async (req, res) => {
     const baseUrl = "https://github.com/login/oauth/access_token";
     const config = {
         client_id: "fbd8388f53636c8d86d7",
-        client_secret: "90627ac297f54873970bd59c7a393070cb97b6ff",
+        client_secret: "5d0568d568e37e56f100473995cff4b90f612ba9",
         code: req.query.code,
     }
     const params = new URLSearchParams(config).toString();
@@ -130,30 +131,29 @@ export const postEditProfile = async (req, res) => {
         location,
     }, { new: true });
     req.session.user = updateUser;
-    return res.redirect("/users/edit-profile");
+    return res.redirect("/");
 }
 
-export const getChangePassword = (req, res) => {
+export const getChangePassword = async (req, res) => {
     if (req.session.user.socialOnly === true) {
         return res.redirect("/");
     }
-    return res.render("change-password", { pageTitle: "Change password" });
+    return res.render("chpassword", { pageTitle: "Change password" });
 }
 
 export const postChangePassword = async (req, res) => {
     const {
         session:
-        {
-            user: { _id, password } },
-        body: { oldpassword, newpassword, newpassword2 }
+        { user: { _id } },
+        body: { oldpassword, newpassword, newpassword2 },
     } = req;
-    const user = await User.findById(_id);
+    const user = await User.findById(req.user.session._id);
     const ok = await bcrypt.compare(oldpassword, user.password);
     if (!ok) {
-        return res.status(400).render("change-password", { pageTitle: " Change Password ", errorMessage: "The current password is incorrect" });
+        return res.status(400).render("chpassword", { pageTitle: " Change Password ", errorMessage: "The current password is incorrect" });
     }
     if (newpassword !== newpassword2) {
-        return res.status(400).render("change-password", { pageTitle: "Change Password", errorMessage: "The password does not match the comfirmation" });
+        return res.status(400).render("chpassword", { pageTitle: "Change Password", errorMessage: "The password does not match the comfirmation" });
     }
     user.password = newpassword;
     await user.save();
@@ -168,18 +168,17 @@ export const see = async (req, res) => {
         path: "videos",
         populate: {
             path: "owner",
-            model:"User",
+            model: "User",
         },
     });
-    console.log(user)
     if (!user) {
-      return res.status(404).render("404", { pageTitle: "User not found." });
+        return res.status(404).render("404", { pageTitle: "User not found." });
     }
     return res.render("profile", {
-      pageTitle: user.name,
-      user,
+        pageTitle: user.name,
+        user,
     });
-  };
+};
 
 
 

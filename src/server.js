@@ -6,9 +6,11 @@ import path  from "path";
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import rootRouter from "./router/rootRouter";
 import userRouter from "./router/userRouter";
 import videoRouter from "./router/videoRouter";
+import apiRouter from "./router/apiRouter";
 import { loacalsMiddleware } from "./middleware";
 import MongoStore from "connect-mongo";
 
@@ -27,7 +29,12 @@ app.use(session({
 }));
 
 
-
+app.use((req, res, next) => {
+    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.header("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+});
+app.use(flash());
 app.use(loacalsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
@@ -36,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
+app.use("/api", apiRouter);
 
 
 const handleListening = () => {

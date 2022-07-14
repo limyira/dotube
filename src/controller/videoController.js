@@ -13,11 +13,12 @@ export const getUpload = (req, res) => {
 export const postUpload = async (req, res) => {
   const {title, hashtags, description } = req.body;
   const {user: {_id}} = req.session;
-  const {file} =req;
-  const video = await Video.create({
+  const {video, thumb} =req.files;
+  const videos = await Video.create({
     title,
     description,
-    videoUrl: file.path,
+    videoUrl: video[0].path,
+    thumbUrl: thumb[0].path,
     owner:_id,
     hashtags: Video.formatHashtags(hashtags),
     createdAt: Date.now(),
@@ -27,9 +28,8 @@ export const postUpload = async (req, res) => {
     },
   })
   const user = await User.findById(_id);
-  user.videos.push(video._id);
+  user.videos.push(videos._id);
   user.save();
-  console.log(video)
   
   return res.redirect("/");
 }
@@ -102,3 +102,13 @@ export const search = async (req, res) => {
   }
   return res.render("search", { pageTitle: "Search", videos });
 }
+export const registerView = async(req, res)  => {
+  const {params:{id}} =req;
+  const video = await Video.findById(id);
+  if(!video){
+    return res.sendStatus(404);
+  }
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.sendStatus(200); 
+};
