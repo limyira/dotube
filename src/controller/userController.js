@@ -1,4 +1,5 @@
 import User from "../models/User";
+import mongoose from "mongoose";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import Video from "../models/Video";
@@ -16,7 +17,6 @@ export const postJoin = async (req, res) => {
         password,
         socialOnly: false,
     })
-    console.log(user);
     return res.redirect("/");
 }
 export const getLogin = (req, res) => {
@@ -37,7 +37,6 @@ export const postLogin = async (req, res) => {
     }
     req.session.user = user;
     req.session.loggedIn = true;
-    console.log(req.session)
     return res.redirect("/");
 }
 export const logout = (req, res) => {
@@ -142,12 +141,10 @@ export const getChangePassword = async (req, res) => {
 }
 
 export const postChangePassword = async (req, res) => {
-    const {
-        session:
-        { user: { _id } },
-        body: { oldpassword, newpassword, newpassword2 },
-    } = req;
-    const user = await User.findById(req.user.session._id);
+    const id = req.session.user._id
+    const body = { oldpassword, newpassword, newpassword2 } = req;
+    const user = await User.findById(id);
+    console.log(user)
     const ok = await bcrypt.compare(oldpassword, user.password);
     if (!ok) {
         return res.status(400).render("chpassword", { pageTitle: " Change Password ", errorMessage: "The current password is incorrect" });
