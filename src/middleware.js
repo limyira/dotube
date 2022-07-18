@@ -21,7 +21,7 @@ export const publicOnlyMiddleware = (req, res, next) =>{
         return next();
     } else {
         req.flash("error", "Not authorized")
-        return redirect("/");
+        return res.redirect("/");
     }
 }
 
