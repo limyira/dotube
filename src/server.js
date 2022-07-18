@@ -16,7 +16,7 @@ import { loacalsMiddleware } from "./middleware";
 import MongoStore from "connect-mongo";
 
 const app = express();
-const PORT = 4200;
+const PORT = process.env.PORT || 4200;
 const logger = morgan("dev");
 
 
