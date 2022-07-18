@@ -1,6 +1,7 @@
+
 import mongoose from "mongoose";
 
-mongoose.connect(DB_URL, {
+mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
