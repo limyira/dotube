@@ -144,7 +144,6 @@ export const postChangePassword = async (req, res) => {
     const id = req.session.user._id
     const body = { oldpassword, newpassword, newpassword2 } = req;
     const user = await User.findById(id);
-    console.log(user)
     const ok = await bcrypt.compare(oldpassword, user.password);
     if (!ok) {
         return res.status(400).render("chpassword", { pageTitle: " Change Password ", errorMessage: "The current password is incorrect" });
