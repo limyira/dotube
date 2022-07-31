@@ -28,6 +28,7 @@ export const postUpload = async (req, res) => {
       rating: 0,
     },
   })
+  console.log(videos.thumbUrl)
   const user = await User.findById(_id);
   user.videos.push(videos._id);
   user.save();
