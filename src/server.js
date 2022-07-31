@@ -3,6 +3,7 @@ import "./db";
 import "./models/Video";
 import "./models/User";
 import "./models/Comment";
+import "regenerator-runtime";
 import path  from "path";
 import express from "express";
 import morgan from "morgan";
@@ -16,7 +17,7 @@ import { loacalsMiddleware } from "./middleware";
 import MongoStore from "connect-mongo";
 
 const app = express();
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 4300;
 const logger = morgan("dev");
 
 
@@ -35,12 +36,13 @@ app.use((req, res, next) => {
     res.header("Cross-Origin-Opener-Policy", "same-origin");
     next();
 });
+
 app.use(flash());
 app.use(loacalsMiddleware);
-app.use("/uploads", express.static("uploads"));
-app.use("/static", express.static("assets"));
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
+app.use("/static", express.static("assets"));
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use("/", rootRouter);
 app.use("/users", userRouter);

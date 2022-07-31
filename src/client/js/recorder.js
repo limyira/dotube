@@ -104,6 +104,7 @@ const init = async () => {
         audio:true,
         video:true,
     })
+    console.log(stream)
     preview.srcObject = stream;
     preview.play()
 }

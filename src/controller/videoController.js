@@ -128,10 +128,17 @@ export const createComment = async (req, res) => {
   }
   const comment = await Comment.create({
     text,
-    owner: user._id,
+    owner:user._id,
     video: id,
   });
   video.comments.push(comment._id);
   video.save();
   return res.status(201).json({ newCommentId: comment._id});
 };
+
+
+export const removeComments = async (req, res) => {
+  const { id } = req.params;
+  await Comment.findByIdAndDelete(id);
+  return res.sendStatus(200)
+}

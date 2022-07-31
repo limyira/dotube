@@ -13,6 +13,7 @@ const videoContainer = document.querySelector("#videoContainer");
 const videoControls = document.querySelector("#videoControls");
 
 
+
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue =0.5;

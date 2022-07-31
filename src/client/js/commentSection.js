@@ -1,22 +1,23 @@
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
+const xBtn = document.querySelectorAll("#xBtn")
 
 
 
 const addcomment = (text, newCommentId) => {
     const VideoComments = document.querySelector(".video__comments ul")
     const newComment = document.createElement("li");
-    newComment.dataset= newCommentId;
-    newComment.className ="video__comment";
+    newComment.dataset = newCommentId;
+    newComment.className = "video__comment";
     const icon = document.createElement("i");
-    icon.className= "fas fa-comment"
+    icon.className = "fas fa-comment"
     const span = document.createElement("span");
-    span.innerText= ` ${text}`;
-    const span2= document.createElement("span");
-    span2.innerText="❌";
+    span.innerText = ` ${text}`;
+    const rmSpan = document.createElement("span");
+    rmSpan.innerText = "❌";
     newComment.appendChild(icon);
     newComment.appendChild(span);
-    newComment.appendChild(span2);
+    newComment.appendChild(rmSpan);
     VideoComments.prepend(newComment);
 }
 
@@ -27,6 +28,8 @@ const addcomment = (text, newCommentId) => {
 const handleSubmit = async (event) => {
     event.preventDefault();
     const textarea = form.querySelector("textarea");
+    console.log("hi")
+    console.log("submit")
     const text = textarea.value;
     const videoId = videoContainer.dataset.id;
     if (text === "") {
@@ -41,7 +44,7 @@ const handleSubmit = async (event) => {
     });
     if (response.status === 201) {
         textarea.value = "";
-        const {newCommentId} = await response.json();
+        const { newCommentId } = await response.json();
         addcomment(text, newCommentId);
 
     }
@@ -51,3 +54,19 @@ const handleSubmit = async (event) => {
 if (form) {
     form.addEventListener("submit", handleSubmit);
 }
+
+const removeComment = async (event) => {
+    const videoList = document.querySelector(".video__comment")
+    const commentId = videoList.dataset.id;
+    const li = event.target.parentElement;
+    li.remove();
+    const response = await fetch(`/api/videos/${commentId}/remove`,{
+        method:"DELETE"
+    })
+        
+}
+
+xBtn.forEach(xBtn => {
+    xBtn.addEventListener("click", removeComment)
+}) 
+
