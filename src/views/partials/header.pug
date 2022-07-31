@@ -14,7 +14,10 @@ header
                         if loggedInUser.avatarUrl === ""
                             span 😀
                         else 
-                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
+                            if loggedInUser.avatarUrl.includes("github")
+                                img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
+                            else
+                                img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
                 li 
                     a(href="/videos/upload") Upload   
                 li 
